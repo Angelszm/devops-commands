@@ -1,0 +1,8 @@
+helm repo list
+helm ls -A
+helm search repo nginx -l
+helm get values  nginx -n namespace
+helm install 
+helm upgrade 
+helm rollback
+helm history
