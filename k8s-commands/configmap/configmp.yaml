@@ -1,5 +1,3 @@
-
-
 ConfigMap:
 kubectl create configmap  name --from-literal=key=value
 kubectl create configmap  name --from-file=path
@@ -20,4 +18,3 @@ env:
      configMapKeyRef:
        name:
        key:
-

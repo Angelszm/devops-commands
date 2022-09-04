@@ -1,4 +1,4 @@
-Roles:
+Certificate:
 kubectl get 
 kubectl get /[_name] 
 kubectl get  admin-user -o yaml

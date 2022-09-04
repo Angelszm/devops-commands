@@ -1,0 +1,23 @@
+Nodes: 
+kubectl get nodes
+kubectl describe node node_name
+kubectl get serviceaccounts admin-user -o yaml
+
+Label Nodes:
+kubectl label nodes node01 color=blue
+
+Nodes Taints:
+kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
+
+Versions:
+kubectl get node -o custom-columns=NAME:.metadata.name,VERSION:.status.nodeInfo.kubeletVersion 
+
+
+Node Name: 
+kubectl get nodes -o=jsonpath='{.items[*].metadata.name}'
+
+Get number of CPU cores on each node:
+kubectl get nodes -o=jsonpath='{.items[*].status.capacity.cpu}'
+
+NodeName & CPU Count List:
+kubectl get nodes -o=custom-columns=NODE_NAME:.metadata.name,CPU_COUNT:.status.capacity.cpu
