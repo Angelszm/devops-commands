@@ -1,0 +1,2 @@
+Scheduling:
+kubectl taint node worker1 lkd=value:PreferNoSchedule

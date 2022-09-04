@@ -1,1 +1,470 @@
-Test
+kubectl proxy\n
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml\n
+ kubectl proxy\n
+ kubectl get clusterrolebinding.rbac.authorization.k8s.io/admin-user admin-user -o yaml
+ kubectl proxy\n
+       
+kubectl get secret neo-tls -o yaml
+kubectl get pod <pod-name> -o yaml > pod-definition.yaml (to export yaml file)
+kubectl scale rs new-replica-set --replicas=5
+kubectl scale replicaset new-replica-set --replicas=2
+kubectl create development httpd-frontend --image=httpd:  (Create Deployment)
+kubectl scale deployment --replicas=3 httpd-frontend
+
+Formatting 
+kubectl create namespace test-123 --dry-run -o json
+kubectl create namespace test-123 --dry-run -o yaml
+kubectl get pods -o wide
+kubectl get pods --namespace=dev
+kubectl get pods --namespace=prod
+kubectl config set-context $(kubectl config current-context) --namespace=dev
+
+
+Create a POD in the finance namespace.
+kubectl run redis --image=redis -n finance
+
+
+Endpoints 
+kubectl get ep --all-namespaces
+
+Services 
+db-service.dev.svc.cluster.local
+
+Tains & Tolerent
+kubectl taint nodes node1 app=blue:NoSchedule 
+
+  torelations:
+   - key:
+     operation: 
+     value:
+     effect:
+
+
+Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
+kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml
+kubectl create service clusterip redis --tcp=6379:6379  --dry-run=client -o yaml
+
+
+kubectl expose pod nginx --port=80 --name nginx-service --type=NodePort --dry-run=client -o yaml
+kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
+kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2
+kubectl run httpd --image=httpd:alpine --port=80 --expose
+kubectl run redis --image=redis:alpine --labels=tier=db
+
+Export PDF 
+kubectl get pod pod-name -o yaml > test.yaml
+
+Delete and Update Existing Pod 
+kubectl explain pods --recursive | grep envFrom -A3
+
+Labels
+kubectl label nodes node01 color=blue
+kubectl get nodes node01 --show-labels
+kubectl -n elastic-stack exec -it app -- cat /log/app.log
+Docker to kubernetes
+ENTRYPOINT ["Sleep"] -> containers> commands:[]
+CMD ["5"]            -> containers> args:['10']
+
+Add Labels Tier=DB
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    tier:db
+  name: redis
+spec:
+  containers:
+  - image: redis:alpine
+    name: redis
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    tier: db
+  name: redis-service
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    tier: db
+status:
+  loadBalancer: {}
+
+
+--restart=Never
+
+ENV_Never
+1) Plain Key Value
+2) ConfigMap
+3) Secrets
+
+
+Logs
+kubectl -n namespace logs app
+
+Commands shared in the PPT
+kubectl run nginx --image=nginx   (deployment)
+kubectl run nginx --image=nginx --restart=Never   (pod)
+kubectl run nginx --image=nginx --restart=OnFailure   (job)  
+kubectl run nginx --image=nginx  --restart=OnFailure --schedule="* * * * *" (cronJob)
+
+kubectl run nginx -image=nginx --restart=Never --port=80 --namespace=myname --command --serviceaccount=mysa1 --env=HOSTNAME=local --labels=bu=finance,env=dev  --requests='cpu=100m,memory=256Mi' --limits='cpu=200m,memory=512Mi' --dry-run -o yaml - /bin/sh -c 'echo hello world'
+
+kubectl run frontend --replicas=2 --labels=run=load-balancer-example --image=busybox  --port=8080
+kubectl expose deployment frontend --type=NodePort --name=frontend-service --port=6262 --target-port=8080
+kubectl set serviceaccount deployment frontend myuser
+kubectl create service clusterip my-cs --tcp=5678:8080 --dry-run -o yaml
+
+
+Readiness
+
+Logs:
+watch kubectl top node
+
+Labels & selector
+ kubectl get pods --selector env=dev
+ kubectl get all --selector env=prod,bu=finance,tier=frontend
+ kubectl get pods -l env=dev --no-headers | wc -l
+
+ Rollout and RollBack 
+ - kubectl rollout status deployment/app
+ - kubectl rollout history deployment/app
+
+
+
+ kubectl create -f 
+ kubectl get 
+ kubectl apply -f 
+ kubectl set image deployment/dd nginx=
+ kubectl rollout status deployment/dd 
+ kubectl rollout history deployment/dd
+ kubectl rollout undo deployment
+
+ kubectl rollout history deployment nginx --revision=1
+ kubectl set image deployment nginx nginx=nginx:1.17 --record
+ kubectl edit deployments. nginx --record
+ kubectl rollout history deployment nginx
+  kubectl describe deployments. nginx | grep -i image:
+kubectl expose deployment dep_name --name=webapp-service --target-port=8080 --type=NodePart --port=8080 --dry-run=client -o yaml> svc.yaml
+kubectl get netpol 
+kubectl get pods -l name= 
+kubectl get pods --show-labels
+
+kubectl explain persistentvolume --recursive | less -> /hostpath
+
+
+For Admission Controller
+cat /etc/kubernetes/manifests/kube-apiserver.yaml
+ps -ef | grep kube-apiserver | grep admission-plugins
+
+X.Y.Z
+Where X stands for major, Y stands for minor and Z stands for patch version.
+
+
+
+OS version check 
+uname -a 
+cat /ect/*release*
+
+kubectl run nginx --image=nginx   (deployment)
+kubectl run nginx --image=nginx --restart=Never   (pod)
+kubectl run nginx --image=nginx --restart=OnFailure   (job)  
+kubectl run nginx --image=nginx  --restart=OnFailure --schedule="* * * * *" (cronJob)
+
+kubectl run nginx -image=nginx --restart=Never --port=80 --namespace=myname --command --serviceaccount=mysa1 --env=HOSTNAME=local --labels=bu=finance,env=dev  --requests='cpu=100m,memory=256Mi' --limits='cpu=200m,memory=512Mi' --dry-run -o yaml - /bin/sh -c 'echo hello world'
+
+kubectl run frontend --replicas=2 --labels=run=load-balancer-example --image=busybox  --port=8080
+kubectl expose deployment frontend --type=NodePort --name=frontend-service --port=6262 --target-port=8080
+kubectl set serviceaccount deployment frontend myuser
+kubectl create service clusterip my-cs --tcp=5678:8080 --dry-run -o yaml
+
+KUBE_EDITOR=nano kubectl edit deploy nginx 
+k get po -A
+k config set-context mycontext --namespace=default (Save on nodepad)
+k explain cronjob --recursive 
+
+kubectl commands Details Check
+
+
+To create pod and service at one time 
+k run httpd --image=httpd:alpine --port=80 --expose
+
+
+kubectl get pods --no-headers --selector env=prod,bu=finance,tier=frontend
+Selector and Match Laber should be same values.
+
+
+
+Pod Edit and replace 
+kubectl replace -f /tmp/kubectl-edit-1608352614.yaml --force
+pod "elephant" deleted
+pod/elephant replaced
+
+ReplicaSet
+Selector is one of the major difference between replication controller and replica set
+kubectl edit replicaset name
+
+Logging and Monitoring 
+kubectl top node
+
+kubectl logs -f pod-name container-name
+
+Deployment (Same as ReplicaSet)
+Once create deployment, can get deployments,replicaset, pods
+
+Useful Commands
+kubectl run nginx --image=nginx --dry-run=client -o yaml
+kubectl create deployment --image=nginx nginx
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml
+kubectl create -f nginx-deployment.yaml
+kubectl create deployment --image=nginx nginx --replicas=4 --dry-run=client -o yaml > nginx-deployment.yaml
+kubectl create deployment d_name --image= 
+kubectl scale deployment --replicas=3 d_name
+kubectl get ns --no-headers | wc -l
+kubectl -n research get pods --no-headers 
+kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml
+kubectl expose pod nginx --type=NodePort --port=80 --name=nginx-service --dry-run=client -o yaml
+kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml (dd the node port in manually before creating the service with the pod.)
+
+
+
+
+for expose deployment with Services
+- kubectl expose deployment name --name=service_name --target-port= --type=Nodeport --port= (then add node port in yaml file)
+
+Create Pod and expose to service 
+- kubectl run httpd --image=httpe:alpine --port 80 --expose  (will create pod and svc)
+
+HOSTNAME
+servicename.namespace.service.domain
+db-service.dev.svc.cluster.local
+
+
+
+
+kubectl rollout status deployment/name
+kubectl rollout history deployment/name
+
+
+Deployment Strategy
+- Recreate  (means terminate all pods and update new ones)
+- RollingUpdate (means update one and terminate one)
+
+
+RollBack 
+- kubectl get replicasets
+- kubectl rollout undo deployment/name
+
+
+Configure Applications
+- Command and Argument 
+- Environment Variables
+- Secrets
+
+
+Command & Argument
+- CMD sleep 5
+- CMD ["sleep", "5"]
+- ENTRYPOINT ["sleep"] (but value with commang line)
+
+or 
+- ENTRYPOINT ["sleep"] 
+- CMD ["5]
+
+or
+docker run --entrypoint sleep2.0 ubuntu-sleeper 10
+
+
+Docker to kubernetes
+ENTRYPOINT ["Sleep"] -> containers> command:["sleep2.0"]
+CMD ["5"]            -> containers> args:["5"]
+
+
+Env Value Types
+- env 
+
+env:
+ - name: 
+   value:
+
+
+
+env:
+ - name: 
+   valueFrom:
+      secretKeyRef:
+
+
+OS Upgrades 
+- kubectl drain node-1 (means remove pods from this node and attach to another nodes)
+- kubectl uncordon node 1 (means attact and reschedule again)
+- kubectl cordon node-2 (pod schedule on this node)
+
+Running the uncordon command on a node will not automatically schedule pods on the node. When new pods are created, they will be placed on node01.
+
+Cluster Upgrade
+Kubernetes Releases
+- kubectl get nodes
+- v1.11.3  (Major, Minor, Patch)
+only 3 versions released 
+- un-supported for olders versions
+- upgrade version should be one step to one steps
+
+
+apt update 
+apt install kubeadm=version_no
+kubeadm upgrade apply vverion_no / kubeadm upgrade node (on worker nodes)
+apt install kubelet=version_no 
+systemctl restart kubelet
+
+
+Backup 
+Snapshot Save 
+- need to export ETCD API version 
+- take Snapshot with etcd (but etcd is tls, then we need cacert,cert,key, backup location )
+
+ETCDCTL_API=3 etcdctl --endpoints=https://[127.0.0.1]:2379 \
+--cacert=/etc/kubernetes/pki/etcd/ca.crt \
+--cert=/etc/kubernetes/pki/etcd/server.crt \
+--key=/etc/kubernetes/pki/etcd/server.key \
+snapshot save /opt/snapshot-pre-boot.db
+ss
+
+etcdctl snapshot restore (the only required option for the restore command is the --data-dir.)
+
+ETCDCTL_API=3 etcdctl  --data-dir /var/lib/etcd-from-backup \
+snapshot restore /opt/snapshot-pre-boot.db
+
+opnessl genrsa -out ca.key 2048
+openssl req -new -key ca.key -sub "/CN=KUBERNETES-CA" -out ca.csr
+
+View certificates 
+- openssl x509 -in /etc/kubernetes/pki/
+
+To Create a csr etc
+openssl genrsa -out name.key 2048
+openssl req -new -key name.key -subj "/CN=name" -out name.csr
+
+
+To request a certificate assign 
+use yaml file format 
+
+Use | base64 to decode
+cat .csr | base64 
+
+To Approve CSR Request 
+kubectl certificate approve csr name 
+kubectl get csr
+
+To Reject CSR Request 
+kubectl certificate deny csr-names
+
+
+Kube-Config Yaml File : 
+
+apiVersion: 
+kind:
+current-context:  
+clusters:
+contexts:
+users: 
+
+
+kubectl config view 
+kubectl config use-context context_name
+kubectl config -h 
+
+To change current context and use context 
+kubectl config --kubeconfig=/root/my-kube-config use-context research
+kubectl config --kubeconfig=/root/my-kube-config current-context
+
+
+
+Role Binding Means Assign to account
+
+
+To Check Access 
+kubectl get pods --as dev-user
+kubectl auth can-i create deployments --namespace dev-user
+kubectl create role dev-user --verb=create --resource=deployments --namespace=blue --dry-run=client -o yaml > dev-role.yaml
+kubectl create rolebinding dev-user-role-binding --namespace=blue --role=dev-user --user=dev-user
+
+Exec
+kubectl exec -it pod-name ls /vol-mount
+kubectl exex pod-name -- whoami
+kubectl -n elastic-stack exec -it app -- cat /log/app.log
+kubectl exec webapp -- cat /log/app.log
+
+
+image: registry/user/ccount/image/repo
+image: docker.io/library/nginxß
+docker login 
+docker run 
+kubectl create secret name regcred --docker-server ß
+kubectl create secret docker-registry private-reg-cred --docker-server=myprivateregistry.com:5000 --docker-username=dock_user --docker-password=dock_password --docker-email=dock_user@myprivateregistry.com
+
+Security Context means
+the userid of the security context in the container ovverides the userid in the security context
+spec:
+  securityContext:
+    runAsUser: 1010 (no user then root access)
+      capabilities:
+        add: ["SYS_TIME"]    
+
+
+Network Policy 
+Ingress Egress 
+to and from and 
+
+
+Storage 
+Docker Storage
+- Storage Drivers and Volume Drivers
+
+Docker Layered Architecture 
+It means layered Architecture can use from cache and it changes from the updated layers.
+
+Volume Drivers and Storage Drivers 
+if we want to persist volume and then need to use volume driver and it tools is local 
+
+
+Container Storage Interface. 
+- rkt 
+- cri-o
+
+
+Container Runtime Interface (rkt,cri-o)
+Container Network Interface (weaveworks, flannel, cilium)
+Container Storage Interface (portworx, ebs, dell, glusterFS)
+
+
+
+Environment
+To get Internal IP Address - k get nodes -o wide
+To check Mac Address - arp node_name
+Ip Address, Mac, Network One to one communication - ip a / ip link 
+To look at for Default Gateway - ip route show default
+Port Listener check -> netstat -nplt
+Connected Port -> netstat -anp
+        -l, --listening          display listening server sockets
+
+
+
+ kubelet service and network plugin 
+ ps -aux | grep kubelet 
+
+ CNI Supported Plugin 
+ /opt/cni/bin        
+
+
+

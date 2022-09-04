@@ -1,0 +1,12 @@
+Alias:
+alias k='kubectl' 
+alias kg='kubectl get'
+alias kgp='kubectl get pods'
+export do="--dry-run=client -o yaml"
+alias kdesc='kubectl describe pod'
+alias kcre='kubectl create -f'
+alias ksysgpo='kubectl --namespace=kube-system get pod'
+alias kgsvcoyaml='kubectl get service -o=yaml'
+alias kgsvcwn='kubectl get service --watch --namespace'
+alias kgsvcslwn='kubectl get service --show-labels --watch --namespace'
+alias kgwf='kubectl get --watch -f'

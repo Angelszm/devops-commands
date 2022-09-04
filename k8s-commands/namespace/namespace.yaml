@@ -1,0 +1,3 @@
+Namespace: 
+kubectl create ns production
+kubectl create ns development

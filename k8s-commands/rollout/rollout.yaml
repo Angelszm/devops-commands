@@ -1,0 +1,8 @@
+
+Rollout History:
+kubectl rollout history ds ds-one
+kubectl rollout history ds ds-one --revision=1
+kubectl rollout history ds ds-one --revision=2
+
+
+Rollout Undo:

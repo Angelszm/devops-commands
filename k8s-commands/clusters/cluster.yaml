@@ -1,0 +1,3 @@
+Cluster:
+kubectl get cluster local
+kubectl describe cluster local
