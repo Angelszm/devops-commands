@@ -1,0 +1,23 @@
+
+
+ConfigMap:
+kubectl create configmap  name --from-literal=key=value
+kubectl create configmap  name --from-file=path
+kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue
+
+
+
+if we have configmap and its values:
+envFrom:
+  - configMapRef:
+      name: app-config
+
+
+Single env with name and key value:
+env:
+ - name: 
+   valueFrom:
+     configMapKeyRef:
+       name:
+       key:
+

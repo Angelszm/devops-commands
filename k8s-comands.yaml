@@ -10,7 +10,6 @@ kubectl scale rs new-replica-set --replicas=5
 kubectl scale replicaset new-replica-set --replicas=2
 kubectl create development httpd-frontend --image=httpd:  (Create Deployment)
 kubectl scale deployment --replicas=3 httpd-frontend
-kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue
 
 Formatting 
 kubectl create namespace test-123 --dry-run -o json
@@ -298,44 +297,12 @@ env:
  - name: 
    value:
 
-Single env
-env:
- - name: 
-   valueFrom:
-     configMapKeyRef:
-       name:
-       key:
-
 
 
 env:
  - name: 
    valueFrom:
       secretKeyRef:
-
-
-ConfigMap 
-kubectl create configmap  name --from-literal=key=value
-kubectl create configmap  name --from-file=path
-
-if we have configmap and its values 
-envFrom:
-  - configMapRef:
-      name: app-config
-
-
-Secret : 
-kubectl get Secrets
-kubectl describe Secrets
-kubectl get secret name -o yaml
-for encode and decode 
-echo -n "value" | base64
-echo -n "base64value" | base64 --decode
-
-if we have secrets and its values 
-envFrom:
-  - secretRef:
-      name: app-secret
 
 
 OS Upgrades 
