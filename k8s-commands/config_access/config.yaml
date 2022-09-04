@@ -1,0 +1,46 @@
+Configure Access to Multiple Clusters
+
+- Clusters
+- Users
+- Contexts
+- Config View 
+
+
+Config View:
+kubectl config view
+kubectl config --kubeconfig=config-demo view
+
+To see only the configuration information associated with the current context, use the --minify flag.
+kubectl config --kubeconfig=config-demo view --minify
+
+
+Set Current Context/Clusters:
+kubectl config --kubeconfig=config-demo set-context dev-frontend --cluster=development --namespace=frontend --user=developer
+kubectl config --kubeconfig=config-demo use-context dev-frontend
+kubectl config set-cluster NAME [--server=server] [--certificate-authority=path/to/certificate/authority] [--insecure-skip-tls-verify=true] [--tls-server-name=example.com]
+
+
+Get with Config: 
+kubectl config get-clusters
+kubectl config get-users
+
+Set Credentials: 
+kubectl config set-credentials NAME [--client-certificate=path/to/certfile] [--client-key=path/to/keyfile] [--token=bearer_token] [--username=basic_user] [--password=basic_password] [--auth-provider=provider_name] [--auth-provider-arg=key=value] [--exec-command=exec_command] [--exec-api-version=exec_api_version] [--exec-arg=arg] [--exec-env=key=value]
+
+Rename: 
+kubectl config rename-context old-name new-name
+
+Environment Variables: 
+export KUBECONFIG_SAVED="$KUBECONFIG"
+
+
+Clean Up : 
+To delete a user, kubectl --kubeconfig=config-demo config unset users.<name>
+To remove a cluster, kubectl --kubeconfig=config-demo config unset clusters.<name>
+To remove a context, kubectl --kubeconfig=config-demo config unset contexts.<name>
+To remove namespace in foo context, kubectl config unset contexts.foo.namespace
+To remove a KUBECONFIG environment variables to original value : export KUBECONFIG="$KUBECONFIG_SAVED"
+
+
+Config output with jsonpath:
+kubectl config view --kubeconfig=my-kube-config -o jsonpath="{.contexts[?(@.context.user=='aws-user')].name}" > /opt/outputs/aws-context-name
