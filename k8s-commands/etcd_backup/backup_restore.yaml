@@ -1,0 +1,12 @@
+ETCD_Backup: 
+ETCDCTL_API=3 etcdctl snapshot save \
+    --cacert /etc/kubernetes/pki/etcd/ca.crt \
+    --cert /etc/kubernetes/pki/etcd/server.crt \
+    --key /etc/kubernetes/pki/etcd/server.key \
+    /opt/snapshot-pre-boot.db
+    
+    
+ETCD_Restore:
+ETCDCTL_API=3 etcdctl snapshot restore \
+    --data-dir /var/lib/etcd-from-backup \
+    /opt/snapshot-pre-boot.db
