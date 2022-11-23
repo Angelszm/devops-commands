@@ -53,3 +53,7 @@ Let's check each kubernetes commands.
 * ETCD Backup: https://github.com/Angelszm/devops-commands/tree/k8s-commands/k8s-commands/etcd_backup
 
 * Openssl: https://github.com/Angelszm/devops-commands/tree/k8s-commands/k8s-commands/openssl
+
+
+Grafana 
+- https://grafana.com/docs/grafana-cloud/kubernetes-monitoring/how-to/prometheus/prometheus_operator/
